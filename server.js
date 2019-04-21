@@ -22,6 +22,23 @@ function onRequest (request, response) {
     return
   }
 
+    if (request.method === 'POST' && request.url === '/basket') {
+    response.writeHead(200, headers)
+
+
+    let body = ''
+    request.on('data', chunk => {
+        body += chunk
+      fs.writeFile('basket.json', body, 'utf8', err => {
+        if (err) throw err
+        console.log('Data written to file')
+        // let test = fs.readFileSync('cards.json')
+        console.log(body)
+
+      })
+    })
+  }
+
   if (request.method == 'POST' && request.url == '/cards') {
     response.writeHead(200, headers)
 
@@ -31,8 +48,8 @@ function onRequest (request, response) {
       fs.writeFile('cards.json', body, 'utf8', err => {
         if (err) throw err
         console.log('Data written to file')
-        let test = fs.readFileSync('cards.json')
-        console.log(JSON.parse(test))
+        // let test = fs.readFileSync('cards.json')
+        console.log(body)
 
       })
     })
@@ -54,7 +71,7 @@ function onRequest (request, response) {
   // //   console.log('A user made a request' + request.url)
   //   response.writeHead(200, { 'Content-Type': 'text/plain' })
   //   response.write('Here is your response')
-  //   response.end()
+    response.end()
 }
 
 http.createServer(onRequest).listen(3000)
