@@ -22,6 +22,13 @@ function onRequest (request, response) {
     return
   }
 
+  if (request.method === 'GET' && request.url === '/basket') {
+    response.writeHead(200, headers)
+    const json = JSON.stringify(fs.readFileSync('basket.json')) 
+    console.log(json)
+    response.write(json)
+  }
+
     if (request.method === 'POST' && request.url === '/basket') {
     response.writeHead(200, headers)
 
