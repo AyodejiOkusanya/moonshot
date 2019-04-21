@@ -24,61 +24,32 @@ function onRequest (request, response) {
 
   if (request.method === 'GET' && request.url === '/basket') {
     response.writeHead(200, headers)
-    const json = JSON.stringify(fs.readFileSync('basket.json')) 
+    const buffer = require('./basket.json')
+    // fs.readFileSync('basket.json')
+    const json = JSON.stringify(buffer)
     console.log(json)
     response.write(json)
   }
 
-    if (request.method === 'POST' && request.url === '/basket') {
+  if (request.method === 'POST' && request.url === '/basket') {
     response.writeHead(200, headers)
-
 
     let body = ''
     request.on('data', chunk => {
-        body += chunk
+      body += chunk
       fs.writeFile('basket.json', body, 'utf8', err => {
         if (err) throw err
         console.log('Data written to file')
         // let test = fs.readFileSync('cards.json')
         console.log(body)
-
       })
     })
-  }
-
-  if (request.method == 'POST' && request.url == '/cards') {
-    response.writeHead(200, headers)
-
-    let body = ''
-    request.on('data', chunk => {
-        body += chunk
-      fs.writeFile('cards.json', body, 'utf8', err => {
-        if (err) throw err
-        console.log('Data written to file')
-        // let test = fs.readFileSync('cards.json')
-        console.log(body)
-
-      })
-    })
-    // request.on('end', () => {
-    //   response.end('ok')
-    // })
-
-    // const data = JSON.stringify(request)
-    // console.log(body.toString())
-
-    // fs.writeFile('cards.json', body, err => {
-    //   if (err) throw err
-    //   console.log('Data written to file')
-    // //   let newData = JSON.parse(rawdata)
-    // //   console.log(newData)
-    // })
   }
 
   // //   console.log('A user made a request' + request.url)
   //   response.writeHead(200, { 'Content-Type': 'text/plain' })
   //   response.write('Here is your response')
-    response.end()
+  response.end()
 }
 
 http.createServer(onRequest).listen(3000)
